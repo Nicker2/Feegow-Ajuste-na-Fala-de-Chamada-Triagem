@@ -2,7 +2,7 @@
 // @name         Interceptar e Modificar Fala (Atualizado com Nomes)
 // @namespace    http://tampermonkey.net/
 // @version      1.6
-// @description  Modifica a fala quando há referência a "exame 01" ou "dr.  está chamando paciente [nome]"
+// @description  Modifica a fala quando há referência a "exame 01" ou "está chamando paciente [nome]"
 // @match        https://core.feegow.com/tvcall/panelV3/vvAM/*
 // @grant        none
 // ==/UserScript==
@@ -35,17 +35,17 @@
 
         // Verifica as condições
         const contemExame01 = textoOriginal.includes("exame 01");
-        const contemDoutorChamando = textoOriginal.includes("dr.  está chamando paciente");
+        const contemDoutorChamando = textoOriginal.includes("está chamando paciente");
 
         console.log(`[Interceptação] Verificação de 'exame 01': ${contemExame01}`);
-        console.log(`[Interceptação] Verificação de 'dr.  está chamando paciente': ${contemDoutorChamando}`);
+        console.log(`[Interceptação] Verificação de 'está chamando paciente': ${contemDoutorChamando}`);
 
         // Modifica o texto se contiver tanto "dr.  está chamando paciente" quanto "exame 01"
         if (contemDoutorChamando && contemExame01) {
-            console.log("[Interceptação] Condição atendida: Texto contém 'dr.  está chamando paciente' e 'exame 01'.");
+            console.log("[Interceptação] Condição atendida: Texto contém 'está chamando paciente' e 'exame 01'.");
 
             // Usando expressão regular para capturar a parte com o nome
-            const regexDoutorChamando = /dr\.  está chamando paciente ([a-zA-Z\s]+) para atendimento na sala de exame 01 - matriz/i;
+            const regexDoutorChamando = /está chamando paciente ([a-zA-Z\s]+) para atendimento na sala de exame 01 - matriz/i;
             const match = utterance.text.match(regexDoutorChamando);
 
             if (match) {
