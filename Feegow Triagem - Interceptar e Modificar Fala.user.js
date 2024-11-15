@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Interceptar e Modificar Fala (Atualizado com Nomes)
 // @namespace    http://tampermonkey.net/
-// @version      1.6
+// @version      1.7
 // @description  Modifica a fala quando há referência a "exame 01" ou "está chamando paciente [nome]"
 // @match        https://core.feegow.com/tvcall/panelV3/vvAM/*
 // @grant        none
