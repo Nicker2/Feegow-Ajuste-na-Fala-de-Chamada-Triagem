@@ -51,3 +51,11 @@ O script inclui diversos logs de depuração no console para auxiliar no monitor
 
 - Este script foi desenvolvido especificamente para o sistema Feegow do HOC Hospital de Olhos de Caraguatatuba.
 - Pode ser necessário ajustar a lógica caso haja outras modificações nas mensagens de fala ou no formato dos dados.
+
+---
+
+## Autor
+
+Criado por Nicolas Bonza Cavalari Borges.
+
+---
