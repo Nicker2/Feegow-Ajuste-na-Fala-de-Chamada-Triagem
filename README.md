@@ -53,9 +53,16 @@ O script inclui diversos logs de depuração no console para auxiliar no monitor
 - Pode ser necessário ajustar a lógica caso haja outras modificações nas mensagens de fala ou no formato dos dados.
 
 ---
+## **Licença**
 
-## Autor
+Este projeto está licenciado sob a **MIT License**. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
+---
+## **Autor**
 
-Criado por Nicolas Bonza Cavalari Borges.
+Desenvolvido por **Nicolas Bonza Cavalari Borges**.
+---
+## **Contribuições**
+
+Se você encontrar algum problema ou quiser sugerir melhorias, fique à vontade para abrir uma **issue** ou enviar um **pull request**.
 
 ---
