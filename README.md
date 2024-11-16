@@ -23,8 +23,11 @@ O script detecta chamadas de pacientes contendo a frase "está chamando paciente
 ### Como usar
 
 1. Instale o Tampermonkey como extensão no seu navegador.
-2. Crie um novo script no Tampermonkey e cole o código.
-3. O script será executado automaticamente ao acessar a URL do sistema Feegow: `https://core.feegow.com/tvcall/panelV3/vvAM/0`.
+2. Ative o **modo desenvolvedor** no Google Chrome:
+   - Clique nos três pontos no canto superior direito e vá em **Mais ferramentas** > **Extensões**.
+   - No canto superior direito da página de extensões, ative o botão **Modo do desenvolvedor**.
+3. Crie um novo script no Tampermonkey e cole o código.
+4. O script será executado automaticamente ao acessar a URL do sistema Feegow: `https://core.feegow.com/tvcall/panelV3/vvAM/0`.
 
 ### Exemplo de Modificação de Fala
 
