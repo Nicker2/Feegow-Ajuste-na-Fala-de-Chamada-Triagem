@@ -6,13 +6,13 @@ Este é um script do Tampermonkey para modificar a fala gerada pelo sistema Feeg
 
 ---
 
-### Funcionalidade
+## Funcionalidade
 
 O script detecta chamadas de pacientes contendo a frase "está chamando paciente [nome]" seguida da referência à sala de exame 01. Quando detectado, o texto é alterado, substituindo "está chamando paciente" por "Enfermagem está chamando paciente" e trocando "sala de exame 01" por "triagem", garantindo a correção da informação transmitida.
 
 ---
 
-### Como funciona
+## Como funciona
 
 1. **Interceptação da função de fala**: A função `speechSynthesis.speak` do navegador é interceptada para que o texto possa ser modificado antes de ser pronunciado.
    
@@ -26,7 +26,7 @@ O script detecta chamadas de pacientes contendo a frase "está chamando paciente
 
 ---
 
-### Como usar
+## Como usar
 
 1. Instale o Tampermonkey como extensão no seu navegador.
 2. Ative o **modo desenvolvedor** no Google Chrome:
@@ -37,7 +37,7 @@ O script detecta chamadas de pacientes contendo a frase "está chamando paciente
 
 ---
 
-### Exemplo de Modificação de Fala
+## Exemplo de Modificação de Fala
 
 #### Texto original:
 > "está chamando paciente Rafaela para atendimento na sala de exame 01 - matriz"
@@ -49,13 +49,13 @@ O script detecta chamadas de pacientes contendo a frase "está chamando paciente
 
 ---
 
-### Logs de Depuração
+## Logs de Depuração
 
 O script inclui diversos logs de depuração no console para auxiliar no monitoramento de sua execução. Isso pode ser útil para verificar se as condições estão sendo atendidas corretamente e se o texto está sendo modificado conforme esperado.
 
 ---
 
-### Dependências
+## Dependências
 
 - **Tampermonkey**: Extensão do navegador para rodar scripts de usuários (userscripts).
 - **Navegador compatível**: O script foi testado em navegadores como Google Chrome e Firefox, que suportam a API `speechSynthesis`.
@@ -63,7 +63,7 @@ O script inclui diversos logs de depuração no console para auxiliar no monitor
 
 ---
 
-### Atenção
+## Atenção
 
 - Este script foi desenvolvido especificamente para o sistema Feegow do HOC Hospital de Olhos de Caraguatatuba.
 - Pode ser necessário ajustar a lógica caso haja outras modificações nas mensagens de fala ou no formato dos dados.
