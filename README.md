@@ -42,6 +42,7 @@ O script inclui diversos logs de depuração no console para auxiliar no monitor
 
 - **Tampermonkey**: Extensão do navegador para rodar scripts de usuários (userscripts).
 - **Navegador compatível**: O script foi testado em navegadores como Google Chrome e Firefox, que suportam a API `speechSynthesis`.
+- **Modo desenvolvedor ativo**: Para instalar o script diretamente pelo Tampermonkey no Google Chrome, é necessário ativar o **modo desenvolvedor** das extensões.
 
 ### Atenção
 
