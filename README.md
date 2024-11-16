@@ -12,10 +12,10 @@ O script detecta chamadas de pacientes contendo a frase "está chamando paciente
 
 1. **Interceptação da função de fala**: A função `speechSynthesis.speak` do navegador é interceptada para que o texto possa ser modificado antes de ser pronunciado.
    
-2. **Verificação de condições**: O script verifica se o texto da fala contém "exame 01" ou "dr. está chamando paciente [nome]". Dependendo do caso, o texto é modificado para garantir precisão.
+2. **Verificação de condições**: O script verifica se o texto da fala contém "exame 01" ou "está chamando paciente [nome]". Dependendo do caso, o texto é modificado para garantir precisão.
 
 3. **Modificação do texto**:
-   - Se a fala mencionar "dr. está chamando paciente [nome] para atendimento na sala de exame 01 - matriz", o nome do paciente é extraído, "dr." é substituído por "Enfermagem", e a sala é corrigida para "triagem".
+   - Se a fala mencionar "está chamando paciente [nome] para atendimento na sala de exame 01 - matriz", o nome do paciente é extraído, "está chamando paciente" é substituído por "Enfermagem está chamando paciente", e a sala é corrigida para "triagem".
    - Se a fala contiver apenas "exame 01", o texto é alterado para "Enfermagem está chamando para atendimento na sala de triagem".
 
 4. **Execução da fala modificada**: Após as alterações, o texto modificado é passado para a função original de síntese de fala para ser pronunciado pelo navegador.
@@ -29,7 +29,7 @@ O script detecta chamadas de pacientes contendo a frase "está chamando paciente
 ### Exemplo de Modificação de Fala
 
 #### Texto original:
-> "Dr. está chamando paciente Rafaela para atendimento na sala de exame 01 - matriz"
+> "está chamando paciente Rafaela para atendimento na sala de exame 01 - matriz"
 
 #### Texto modificado:
 > "Enfermagem está chamando paciente Rafaela para atendimento na sala de triagem"
