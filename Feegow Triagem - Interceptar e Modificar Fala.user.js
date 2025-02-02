@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Interceptar e Modificar Fala (Atualizado com Nomes)
 // @namespace    http://tampermonkey.net/
-// @version      1.7.2
+// @version      1.7.3
 // @description  Modifica a fala quando há referência a "exame 01" ou "está chamando paciente [nome]"
 // @match        https://core.feegow.com/tvcall/panelV3/vvAM/*
 // @grant        none
@@ -65,6 +65,12 @@
                 utterance.text = utterance.text.replace(regexDoutorChamando, `Enfermagem está chamando ${nomePaciente} para sala de triagem.`);
                 console.log("[Modificação] Texto alterado para:", utterance.text);
 
+                // Remove "dr.  " do início do texto final, se existir
+                if (utterance.text.startsWith("dr.  ")) {
+                    utterance.text = utterance.text.replace(/^dr\.\s+/, "");
+                    console.log("[Modificação] Removido 'dr.  ' do início do texto.");
+                }
+
                 // Altera o texto na tela
                 alterarTextoNaTela();
             }
@@ -72,6 +78,12 @@
             console.log("[Interceptação] Condição atendida: Texto contém apenas 'exame 01'.");
             utterance.text = "Enfermagem está chamando para atendimento na sala de triagem.";
             console.log("[Modificação] Texto alterado para:", utterance.text);
+
+            // Remove "dr.  " do início do texto final, se existir
+            if (utterance.text.startsWith("dr.  ")) {
+                utterance.text = utterance.text.replace(/^dr\.\s+/, "");
+                console.log("[Modificação] Removido 'dr.  ' do início do texto.");
+            }
 
             // Altera o texto na tela
             alterarTextoNaTela();
