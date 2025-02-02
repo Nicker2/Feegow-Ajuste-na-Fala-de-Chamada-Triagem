@@ -53,8 +53,8 @@
         if (contemDoutorChamando && contemExame01) {
             console.log("[Interceptação] Condição atendida: Texto contém 'está chamando paciente' e 'exame 01'.");
 
-            // Usando expressão regular para capturar a parte com o nome (incluindo acentos)
-            const regexDoutorChamando = /está chamando paciente ([\p{L}\s]+) para atendimento na sala de exame 01 - matriz/giu;
+            // Usando expressão regular para capturar a parte com o nome
+            const regexDoutorChamando = /está chamando paciente ([a-zA-Z\s]+) para atendimento na sala de exame 01 - matriz/i;
             const match = utterance.text.match(regexDoutorChamando);
 
             if (match) {
