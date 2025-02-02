@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Interceptar e Modificar Fala (Atualizado com Nomes)
 // @namespace    http://tampermonkey.net/
-// @version      1.7.3
-// @description  Modifica a fala quando há referência a "exame 01" ou "está chamando paciente [nome]"
+// @version      1.7.4
+// @description  Modifica a fala e o texto na tela quando há referência a "exame 01" ou "está chamando paciente [nome]"
 // @match        https://core.feegow.com/tvcall/panelV3/vvAM/*
 // @grant        none
 // ==/UserScript==
@@ -16,13 +16,23 @@
     const originalSpeak = window.speechSynthesis.speak.bind(window.speechSynthesis);
     console.log("[Tampermonkey] Função original 'speechSynthesis.speak' foi salva com sucesso.");
 
-    // Função para alterar o texto na tela
+    // Função para alterar o texto na tela (tanto no <p class="fonteMedia colorBlue"> quanto no <tbody id="ultimasGeral">)
     function alterarTextoNaTela() {
+        // Altera o texto no <p class="fonteMedia colorBlue">
         const elemento = document.querySelector('p.fonteMedia.colorBlue');
         if (elemento && elemento.textContent.includes("Sala de exame 01 - MATRIZ")) {
             elemento.textContent = "Sala de Triagem";
-            console.log("[Modificação] Texto na tela alterado para 'Sala de Triagem'.");
+            console.log("[Modificação] Texto na tela alterado para 'Sala de Triagem' (fonteMedia colorBlue).");
         }
+
+        // Altera o texto no <tbody id="ultimasGeral">
+        const linhas = document.querySelectorAll('#ultimasGeral p');
+        linhas.forEach(p => {
+            if (p.textContent.includes("Sala de exame 01 - MATRIZ")) {
+                p.textContent = "Sala de Triagem";
+                console.log("[Modificação] Texto na tela alterado para 'Sala de Triagem' (ultimasGeral).");
+            }
+        });
     }
 
     // Sobrescreve a função `speak()`
