@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Interceptar e Modificar Fala (Atualizado com Nomes)
 // @namespace    http://tampermonkey.net/
-// @version      1.7.1
+// @version      1.7.2
 // @description  Modifica a fala quando há referência a "exame 01" ou "está chamando paciente [nome]"
 // @match        https://core.feegow.com/tvcall/panelV3/vvAM/*
 // @grant        none
@@ -15,6 +15,15 @@
     // Armazena a função original de `speechSynthesis.speak`
     const originalSpeak = window.speechSynthesis.speak.bind(window.speechSynthesis);
     console.log("[Tampermonkey] Função original 'speechSynthesis.speak' foi salva com sucesso.");
+
+    // Função para alterar o texto na tela
+    function alterarTextoNaTela() {
+        const elemento = document.querySelector('p.fonteMedia.colorBlue');
+        if (elemento && elemento.textContent.includes("Sala de exame 01 - MATRIZ")) {
+            elemento.textContent = "Sala de Triagem";
+            console.log("[Modificação] Texto na tela alterado para 'Sala de Triagem'.");
+        }
+    }
 
     // Sobrescreve a função `speak()`
     window.speechSynthesis.speak = function(utterance) {
@@ -44,8 +53,8 @@
         if (contemDoutorChamando && contemExame01) {
             console.log("[Interceptação] Condição atendida: Texto contém 'está chamando paciente' e 'exame 01'.");
 
-            // Usando expressão regular para capturar a parte com o nome
-            const regexDoutorChamando = /está chamando paciente ([a-zA-Z\s]+) para atendimento na sala de exame 01 - matriz/i;
+            // Usando expressão regular para capturar a parte com o nome (incluindo acentos)
+            const regexDoutorChamando = /está chamando paciente ([\p{L}\s]+) para atendimento na sala de exame 01 - matriz/giu;
             const match = utterance.text.match(regexDoutorChamando);
 
             if (match) {
@@ -55,11 +64,17 @@
                 // Substitui "dr.  está chamando paciente" por "Enfermagem está chamando paciente", mantendo o nome
                 utterance.text = utterance.text.replace(regexDoutorChamando, `Enfermagem está chamando ${nomePaciente} para sala de triagem.`);
                 console.log("[Modificação] Texto alterado para:", utterance.text);
+
+                // Altera o texto na tela
+                alterarTextoNaTela();
             }
         } else if (contemExame01) {
             console.log("[Interceptação] Condição atendida: Texto contém apenas 'exame 01'.");
             utterance.text = "Enfermagem está chamando para atendimento na sala de triagem.";
             console.log("[Modificação] Texto alterado para:", utterance.text);
+
+            // Altera o texto na tela
+            alterarTextoNaTela();
         } else {
             console.log("[Interceptação] Condição não atendida: Nenhuma modificação feita.");
         }
