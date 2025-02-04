@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Interceptar e Modificar Fala (Atualizado com Nomes)
 // @namespace    http://tampermonkey.net/
-// @version      1.7.5
+// @version      1.7.6
 // @description  Modifica a fala e o texto na tela quando há referência a "exame 01" ou "está chamando paciente [nome]"
 // @match        https://core.feegow.com/tvcall/panelV3/vvAM/*
 // @grant        none
@@ -34,6 +34,27 @@
             }
         });
     }
+
+    // Função para observar mudanças no tbody#ultimasGeral
+    function observarMudancasUltimasGeral() {
+        const alvo = document.querySelector('#ultimasGeral');
+        if (!alvo) return;
+
+        const observer = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+                if (mutation.type === 'childList' || mutation.type === 'characterData') {
+                    alterarTextoNaTela(); // Chama a função para corrigir o texto
+                }
+            });
+        });
+
+        observer.observe(alvo, { childList: true, subtree: true, characterData: true });
+        console.log("[Observer] Monitorando mudanças em #ultimasGeral.");
+    }
+
+    // Inicia o observador assim que o script carregar
+    observarMudancasUltimasGeral();
+
 
     // Sobrescreve a função `speak()`
     window.speechSynthesis.speak = function(utterance) {
