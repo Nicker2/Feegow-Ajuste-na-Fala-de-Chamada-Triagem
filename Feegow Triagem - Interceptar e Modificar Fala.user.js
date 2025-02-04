@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Interceptar e Modificar Fala (Atualizado com Nomes)
 // @namespace    http://tampermonkey.net/
-// @version      1.7.4
+// @version      1.7.5
 // @description  Modifica a fala e o texto na tela quando há referência a "exame 01" ou "está chamando paciente [nome]"
 // @match        https://core.feegow.com/tvcall/panelV3/vvAM/*
 // @grant        none
@@ -64,7 +64,7 @@
             console.log("[Interceptação] Condição atendida: Texto contém 'está chamando paciente' e 'exame 01'.");
 
             // Usando expressão regular para capturar a parte com o nome
-            const regexDoutorChamando = /está chamando paciente ([a-zA-Z\s]+) para atendimento na sala de exame 01 - matriz/i;
+            const regexDoutorChamando = /está chamando paciente ([a-zA-ZÀ-ÿ\s'-]+) para atendimento na sala de exame 01 - matriz/i; //Agora inclui caracteres acentuados, hífens (-) e apóstrofos (')
             const match = utterance.text.match(regexDoutorChamando);
 
             if (match) {
