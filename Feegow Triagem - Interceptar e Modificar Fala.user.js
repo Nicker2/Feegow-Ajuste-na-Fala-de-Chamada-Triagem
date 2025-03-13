@@ -29,6 +29,7 @@
         ultimosPacientes.unshift({ nome: nomePaciente, setor });
         if (ultimosPacientes.length > 10) ultimosPacientes.pop();
         log("[Atualização] Lista de últimos pacientes atualizada:", ultimosPacientes);
+        log(`[Atualização] Lista de últimos pacientes após atualização: ${JSON.stringify(ultimosPacientes)}`); // Log adicionado
     }
 
     function alterarTextoNaTela() {
@@ -52,6 +53,7 @@
                 if (p.textContent.includes(paciente.nome)) {
                     log(`[Observer] Atualizando: ${p.textContent} -> ${paciente.setor}`);
                     p.textContent = `${paciente.nome}\n${paciente.setor}`;
+                    log(`[Observer] Paciente encontrado: ${JSON.stringify(paciente)}`); // Log adicionado
                 }
             });
         });
