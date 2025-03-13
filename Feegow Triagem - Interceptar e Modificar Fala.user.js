@@ -41,13 +41,6 @@
                 elementoFonteMedia.textContent = setor === "Sala de Exames 01" ? "Sala de Exames 01" : "Sala de Triagem";
                 log(`[Modificação] Texto na tela alterado para '${setor === "Sala de Exames 01" ? "Sala de Exames 01" : "Sala de Triagem"}' (fonteMedia colorBlue).`);
             }
-
-            document.querySelectorAll('#ultimasGeral p').forEach(p => {
-                if (p.textContent.includes("Sala de exame 01 - MATRIZ")) {
-                    p.textContent = setor === "Sala de Exames 01" ? "Sala de Exames 01" : "Sala de Triagem";
-                    log(`[Modificação] Texto na tela alterado para '${setor === "Sala de Exames 01" ? "Sala de Exames 01" : "Sala de Triagem"}' (ultimasGeral).`);
-                }
-            });
         }
     }
 
