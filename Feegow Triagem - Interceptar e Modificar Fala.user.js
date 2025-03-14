@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Interceptar e Modificar Fala e Texto na Tela (Atualizado com Nomes e Diferenciação de Setores) - Otimizado
 // @namespace    http://tampermonkey.net/
-// @version      2.1.0
-// @description  Modifica a fala e o texto na tela, diferenciando chamadas de triagem e exames. - Otimizado com logs condicionais
+// @version      2.2.0
+// @description  Modifica a fala e o texto na tela, diferenciando chamadas de triagem e exames. - Otimizado com logs detalhados condicionais
 // @match        https://core.feegow.com/tvcall/panelV3/vvAM/*
 // @grant        none
 // ==/UserScript==
@@ -18,18 +18,18 @@
         }
     };
 
-    log("[Tampermonkey] Iniciando script de interceptação e modificação de fala (versão otimizada com logs condicionais).");
+    log("[Tampermonkey] Iniciando script de interceptação e modificação de fala (versão otimizada com logs detalhados condicionais).");
 
     const originalSpeak = window.speechSynthesis.speak.bind(window.speechSynthesis);
     let ultimosPacientes = [];
 
     function atualizarListaPacientes(nomePaciente, setor) {
         log(`[Atualização] Adicionando/atualizando paciente: ${nomePaciente} -> ${setor}`);
-        ultimosPacientes = ultimosPacientes.filter(p => p.nome !== nomePaciente);
-        ultimosPacientes.unshift({ nome: nomePaciente, setor });
+        ultimosPacientes = ultimosPacientes.filter(p => p.nome.toUpperCase() !== nomePaciente.toUpperCase());
+        ultimosPacientes.unshift({ nome: nomePaciente.toUpperCase(), setor });
         if (ultimosPacientes.length > 10) ultimosPacientes.pop();
         log("[Atualização] Lista de últimos pacientes atualizada:", ultimosPacientes);
-        log(`[Atualização] Lista de últimos pacientes após atualização: ${JSON.stringify(ultimosPacientes)}`); // Log adicionado
+        log(`[Atualização] Lista de últimos pacientes após atualização: ${JSON.stringify(ultimosPacientes)}`);
     }
 
     function alterarTextoNaTela() {
@@ -47,15 +47,26 @@
 
     function modificarUltimasGeral() {
         log("[Observer] Verificando e alterando nomes em #ultimasGeral.");
-        const linhas = document.querySelectorAll('#ultimasGeral p');
-        linhas.forEach(p => {
-            ultimosPacientes.forEach(paciente => {
-                if (p.textContent.includes(paciente.nome)) {
-                    log(`[Observer] Atualizando: ${p.textContent} -> ${paciente.setor}`);
-                    p.textContent = `${paciente.nome}\n${paciente.setor}`;
-                    log(`[Observer] Paciente encontrado: ${JSON.stringify(paciente)}`); // Log adicionado
-                }
-            });
+        log("[Observer] Lista de últimos pacientes:", ultimosPacientes); // Log da lista de pacientes
+
+        const tds = document.querySelectorAll('#ultimasGeral td');
+        tds.forEach(td => {
+            const nomeElement = td.querySelector('p:first-of-type');
+            const setorElement = td.querySelector('p:last-of-type');
+
+            if (nomeElement && setorElement && setorElement.textContent.includes("Sala de exame 01 - MATRIZ")) {
+                const nomePaciente = nomeElement.textContent.trim();
+                log(`[Observer] Nome encontrado: ${nomePaciente}`);
+                log(`[Observer] Setor encontrado: ${setorElement.textContent}`);
+
+                ultimosPacientes.forEach(paciente => {
+                    log(`[Observer] Comparando com paciente: ${paciente.nome}`);
+                    if (paciente.nome === nomePaciente) {
+                        setorElement.textContent = paciente.setor;
+                        log(`[Observer] Atualizando: ${nomePaciente} -> ${paciente.setor}`);
+                    }
+                });
+            }
         });
     }
 
@@ -67,10 +78,10 @@
         }
 
         const observer = new MutationObserver(mutations => {
+            log("[Observer] Mudança detectada em #ultimasGeral."); // Log de detecção do observador
             observer.disconnect();
             mutations.forEach(mutation => {
                 if (mutation.type === 'childList') {
-                    log("[Observer] Mudança detectada em #ultimasGeral.");
                     modificarUltimasGeral();
                     alterarTextoNaTela();
                 }
@@ -92,6 +103,16 @@
         log("[Interceptação] Função 'speak' foi chamada.");
         log("[Interceptação] Texto original recebido:", utterance.text);
 
+        log("[Interceptação] Propriedades da utterance:");
+        log(` - Texto: ${utterance.text}`);
+        log(` - Idioma: ${utterance.lang}`);
+        log(` - Velocidade (rate): ${utterance.rate}`);
+        log(` - Tom (pitch): ${utterance.pitch}`);
+        log(` - Volume: ${utterance.volume}`);
+
+        const textoOriginal = utterance.text.toLowerCase();
+        log(`[Interceptação] Texto convertido para minúsculas: ${textoOriginal}`);
+
         const comecaComDr = utterance.text.startsWith("dr.  ");
         log(`[Interceptação] Chamada começa com "dr.  "? ${comecaComDr}`);
 
@@ -108,13 +129,14 @@
             atualizarListaPacientes(nomePaciente, setor);
 
             utterance.text = `Enfermagem está chamando ${nomePaciente} para ${setor}.`;
-            log("[Modificação] Texto final para fala:", utterance.text);
+            log(`[Modificação] Texto final para fala: ${utterance.text}`);
 
             alterarTextoNaTela();
         }
 
         try {
             log("[Tampermonkey] Preparando para chamar a função original 'speechSynthesis.speak'.");
+            log("[Tampermonkey] Texto final para fala:", utterance.text);
             originalSpeak(utterance);
             log("[Tampermonkey] Função 'speak' foi executada com sucesso.");
         } catch (error) {
@@ -124,5 +146,5 @@
         log("[Interceptação] Fim da execução da função 'speak'.");
     };
 
-    log("[Tampermonkey] Interceptação e modificação da função 'speak' configurada com sucesso (versão otimizada com logs condicionais).");
+    log("[Tampermonkey] Interceptação e modificação da função 'speak' configurada com sucesso (versão otimizada com logs detalhados condicionais).");
 })();
