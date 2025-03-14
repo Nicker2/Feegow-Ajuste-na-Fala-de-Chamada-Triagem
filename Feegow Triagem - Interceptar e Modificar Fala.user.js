@@ -27,7 +27,7 @@
         log(`[Atualização] Adicionando/atualizando paciente: ${nomePaciente} -> ${setor}`);
         ultimosPacientes = ultimosPacientes.filter(p => p.nome.toUpperCase() !== nomePaciente.toUpperCase());
         ultimosPacientes.unshift({ nome: nomePaciente.toUpperCase(), setor });
-        if (ultimosPacientes.length > 10) ultimosPacientes.pop();
+        if (ultimosPacientes.length > 5) ultimosPacientes.pop();
         log("[Atualização] Lista de últimos pacientes atualizada:", ultimosPacientes);
         log(`[Atualização] Lista de últimos pacientes após atualização: ${JSON.stringify(ultimosPacientes)}`);
     }
