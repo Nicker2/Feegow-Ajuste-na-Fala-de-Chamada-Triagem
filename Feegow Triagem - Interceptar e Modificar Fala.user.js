@@ -10,7 +10,7 @@
 (function() {
     'use strict';
 
-    const debugMode = 0; // 1 para habilitar os logs, 0 para desabilitar
+    const debugMode = 1; // 1 para habilitar os logs, 0 para desabilitar
 
     const log = (message) => {
         if (debugMode) {
@@ -136,7 +136,7 @@
 
         try {
             log("[Tampermonkey] Preparando para chamar a função original 'speechSynthesis.speak'.");
-            log("[Tampermonkey] Texto final para fala:", utterance.text);
+            log(`[Tampermonkey] Texto final para fala:", ${utterance.text}`);
             originalSpeak(utterance);
             log("[Tampermonkey] Função 'speak' foi executada com sucesso.");
         } catch (error) {
