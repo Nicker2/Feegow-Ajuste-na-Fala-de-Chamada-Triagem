@@ -10,7 +10,7 @@
 (function() {
     'use strict';
 
-    const debugMode = 0; // 1 para habilitar os logs, 0 para desabilitar
+    const debugMode = 1; // 1 para habilitar os logs, 0 para desabilitar
 
     const log = (message) => {
         if (debugMode) {
@@ -132,6 +132,24 @@
             log(`[Modificação] Texto final para fala: ${utterance.text}`);
 
             alterarTextoNaTela();
+        }
+
+        // Substituição de "atendimento na consultório" por "atendimento no consultório"
+        if (utterance.text.includes("atendimento na consultório")) {
+            utterance.text = utterance.text.replace("atendimento na consultório", "atendimento no consultório");
+            log("[Modificação] Texto após substituição de 'atendimento na consultório':", utterance.text);
+        }
+
+        // Substituição de "dr.  " por "dr. "
+        if (utterance.text.includes("dr.  ")) {
+            utterance.text = utterance.text.replace("dr.  ", "dr. ");
+            log("[Modificação] Texto após substituição de 'dr.  ':", utterance.text);
+        }
+
+        // Substituição de " - matriz" por ""
+        if (utterance.text.includes(" - matriz")) {
+            utterance.text = utterance.text.replace(" - matriz", ".");
+            log("[Modificação] Texto após substituição de 'dr.  ':", utterance.text);
         }
 
         try {
