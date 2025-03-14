@@ -10,7 +10,7 @@
 (function() {
     'use strict';
 
-    const debugMode = 1; // 1 para habilitar os logs, 0 para desabilitar
+    const debugMode = 0; // 1 para habilitar os logs, 0 para desabilitar
 
     const log = (message) => {
         if (debugMode) {
