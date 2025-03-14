@@ -152,6 +152,12 @@
             log("[Modificação] Texto após substituição de ' - matriz':", utterance.text);
         }
 
+        // Substituição de "está chamando paciente" por "está chamando"
+        if (utterance.text.includes("está chamando paciente")) {
+            utterance.text = utterance.text.replace("está chamando paciente", "está chamando");
+            log("[Modificação] Texto após substituição de 'está chamando paciente' por 'está chamando':", utterance.text);
+        }
+
         try {
             log("[Tampermonkey] Preparando para chamar a função original 'speechSynthesis.speak'.");
             log(`[Tampermonkey] Texto final para fala:", ${utterance.text}`);
