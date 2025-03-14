@@ -10,7 +10,7 @@
 (function() {
     'use strict';
 
-    const debugMode = 1; // 1 para habilitar os logs, 0 para desabilitar
+    const debugMode = 0; // 1 para habilitar os logs, 0 para desabilitar
 
     const log = (message) => {
         if (debugMode) {
@@ -137,7 +137,7 @@
         // Substituição de "atendimento na consultório" por "atendimento no consultório"
         if (utterance.text.includes("atendimento na consultório")) {
             utterance.text = utterance.text.replace("atendimento na consultório", "atendimento no consultório");
-            log("[Modificação] Texto após substituição de 'atendimento na consultório':", utterance.text);
+            log("[Modificação] Texto após substituição de 'na consultório' por 'no consultório':", utterance.text);
         }
 
         // Substituição de "dr.  " por "dr. "
@@ -149,7 +149,7 @@
         // Substituição de " - matriz" por ""
         if (utterance.text.includes(" - matriz")) {
             utterance.text = utterance.text.replace(" - matriz", ".");
-            log("[Modificação] Texto após substituição de 'dr.  ':", utterance.text);
+            log("[Modificação] Texto após substituição de ' - matriz':", utterance.text);
         }
 
         try {
