@@ -10,11 +10,65 @@
 (function() {
     'use strict';
 
-    const debugMode = 0; // 1 para habilitar os logs, 0 para desabilitar
+    const debugMode = 1; // 1 para habilitar os logs, 0 para desabilitar
 
     const log = (message) => {
         if (debugMode) {
             console.log(message);
+
+            // Cria o elemento do log se ele ainda não existir
+            if (!document.getElementById('log-container')) {
+                const logContainer = document.createElement('div');
+                logContainer.id = 'log-container';
+                logContainer.style.position = 'fixed';
+                logContainer.style.bottom = '10px';
+                logContainer.style.right = '10px';
+                logContainer.style.width = '400px'; // Aumenta a largura
+                logContainer.style.height = `${window.innerHeight - 20}px`; // Altura da tela
+                logContainer.style.overflowY = 'auto';
+                logContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+                logContainer.style.color = 'white';
+                logContainer.style.padding = '10px';
+                logContainer.style.fontFamily = 'sans-serif';
+                logContainer.style.fontSize = '16px';
+                logContainer.style.textAlign = 'left';
+                document.body.appendChild(logContainer);
+
+                // Injeta o CSS dinamicamente
+                const style = document.createElement('style');
+                style.textContent = `
+        .log-message {
+          opacity: 0;
+          transition: opacity 0.5s ease-in-out;
+          margin-bottom: 5px;
+        }
+
+        .log-message.fade-in {
+          opacity: 1;
+        }
+      `;
+                document.head.appendChild(style);
+            }
+
+            const logContainer = document.getElementById('log-container');
+
+            const logMessage = document.createElement('div');
+            logMessage.classList.add('log-message');
+
+            // Adiciona a hora da mensagem
+            const now = new Date();
+            const time = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+            logMessage.textContent = `${time} - ${message}`;
+
+            // Insere a nova mensagem no final do contêiner
+            logContainer.appendChild(logMessage); // Alterado para inserir no final
+
+            setTimeout(() => {
+                logMessage.classList.add('fade-in');
+            }, 10);
+
+            // Rola para a parte inferior
+            logContainer.scrollTop = logContainer.scrollHeight;
         }
     };
 
@@ -47,7 +101,11 @@
 
     function modificarUltimasGeral() {
         log("[Observer] Verificando e alterando nomes em #ultimasGeral.");
-        log("[Observer] Lista de últimos pacientes:", ultimosPacientes); // Log da lista de pacientes
+        if (!ultimosPacientes || ultimosPacientes.length === 0) {
+            log("[Observer] Lista de pacientes vazia."); // Mensagem para lista vazia
+        } else {
+            log("[Observer] Lista de últimos pacientes:", ultimosPacientes); // Log da lista de pacientes
+        }
 
         const tds = document.querySelectorAll('#ultimasGeral td');
         tds.forEach(td => {
@@ -101,7 +159,7 @@
 
     window.speechSynthesis.speak = function(utterance) {
         log("[Interceptação] Função 'speak' foi chamada.");
-        log("[Interceptação] Texto original recebido:", utterance.text);
+        log(`[Interceptação] Texto original recebido: ${utterance.text}`);
 
         log("[Interceptação] Propriedades da utterance:");
         log(` - Texto: ${utterance.text}`);
@@ -137,30 +195,30 @@
         // Substituição de "atendimento na consultório" por "atendimento no consultório"
         if (utterance.text.includes("atendimento na consultório")) {
             utterance.text = utterance.text.replace("atendimento na consultório", "atendimento no consultório");
-            log("[Modificação] Texto após substituição de 'na consultório' por 'no consultório':", utterance.text);
+            log(`[Modificação] Texto após substituição de 'na consultório' por 'no consultório': ${utterance.text}`);
         }
 
         // Substituição de "dr.  " por "dr. "
         if (utterance.text.includes("dr.  ")) {
             utterance.text = utterance.text.replace("dr.  ", "dr. ");
-            log("[Modificação] Texto após substituição de 'dr.  ':", utterance.text);
+            log(`[Modificação] Texto após substituição de 'dr.  ': ${utterance.text}`);
         }
 
         // Substituição de " - matriz" por ""
         if (utterance.text.includes(" - matriz")) {
             utterance.text = utterance.text.replace(" - matriz", ".");
-            log("[Modificação] Texto após substituição de ' - matriz':", utterance.text);
+            log(`[Modificação] Texto após substituição de ' - matriz': ${utterance.text}`);
         }
 
         // Substituição de "está chamando paciente" por "está chamando"
         if (utterance.text.includes("está chamando paciente")) {
             utterance.text = utterance.text.replace("está chamando paciente", "está chamando");
-            log("[Modificação] Texto após substituição de 'está chamando paciente' por 'está chamando':", utterance.text);
+            log(`[Modificação] Texto após substituição de 'está chamando paciente' por 'está chamando': ${utterance.text}`);
         }
 
         try {
             log("[Tampermonkey] Preparando para chamar a função original 'speechSynthesis.speak'.");
-            log(`[Tampermonkey] Texto final para fala:", ${utterance.text}`);
+            log(`[Tampermonkey] Texto final para fala: ${utterance.text}`);
             originalSpeak(utterance);
             log("[Tampermonkey] Função 'speak' foi executada com sucesso.");
         } catch (error) {
