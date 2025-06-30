@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Interceptar e Modificar Fala e Texto na Tela (Atualizado com Nomes e Diferenciação de Setores) - Otimizado
 // @namespace    http://tampermonkey.net/
-// @version      2.2.0
+// @version      2.2.1
 // @description  Modifica a fala e o texto na tela, diferenciando chamadas de triagem e exames. - Otimizado com logs detalhados condicionais
 // @match        https://core.feegow.com/tvcall/panelV3/vvAM/*
 // @match        https://core.feegow.com/tvcall/panelV3/pzMY/7
@@ -23,10 +23,10 @@
                 const logContainer = document.createElement('div');
                 logContainer.id = 'log-container';
                 logContainer.style.position = 'fixed';
-                logContainer.style.top = '0'; // Colado na parte superior
-                logContainer.style.bottom = '50px'; // Ajuste para acomodar a caixa de texto
-                logContainer.style.right = '0'; // Colado na lateral direita
-                logContainer.style.width = '400px'; // Aumenta a largura
+                logContainer.style.top = '0';
+                logContainer.style.bottom = '50px';
+                logContainer.style.right = '0';
+                logContainer.style.width = '400px';
                 logContainer.style.overflowY = 'auto';
                 logContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
                 logContainer.style.color = 'white';
@@ -85,7 +85,7 @@
                 input.placeholder = 'Digite um comando: /testedr NOME';
                 input.style.position = 'fixed';
                 input.style.bottom = '10px';
-                input.style.right = '100px'; // Ajuste para alinhar com o botão
+                input.style.right = '100px';
                 input.style.width = '300px';
                 input.style.height = '35px';
                 document.body.appendChild(input);
@@ -103,7 +103,7 @@
                     const text = input.value;
                     const parts = text.split(' ');
                     let command = parts[0];
-                    command = command.toLowerCase(); // Converte para minúsculas
+                    command = command.toLowerCase();
                     const name = parts.slice(1).join(' ');
 
                     switch (command) {
@@ -112,46 +112,39 @@
                             log(`dr.  está chamando paciente ${name} para atendimento na consultório 05 - matriz`, true);
                             break;
                         case '/testexames': {
-                            atualizarListaPacientes(name, "Sala de exames 01");
+                            atualizarListaPacientes(name, "Central de Diagnósticos");
                             const elementoFonteMedia = document.querySelector('p.fonteMedia.colorBlue');
                             if (elementoFonteMedia) {
-                                if (elementoFonteMedia.textContent.trim() === "Sala de exame 01 - MATRIZ") {
-                                    log(`[Info] Elemento p.fonteMedia.colorBlue já contém "Sala de exame 01 - MATRIZ". Nenhuma alteração necessária.`);
-                                } else {
-                                    log(`[Info] Elemento p.fonteMedia.colorBlue contém: "${elementoFonteMedia.textContent.trim()}". Alterando para "Sala de exame 01 - MATRIZ".`);
-                                    // Adiciona um atraso de 100ms antes de tentar alterar o elemento
-                                    setTimeout(() => {
-                                        const elementoFonteMediaAtualizado = document.querySelector('p.fonteMedia.colorBlue');
-                                        if (elementoFonteMediaAtualizado) {
-                                            const elementosH1 = document.querySelectorAll('h1.fonteMedia.colorDarkBlue, h1.fonteGrande.colorDarkBlue');
-                                            if (elementosH1.length > 0) {
-                                                const elementoH1 = elementosH1[0]; // Pega o primeiro elemento encontrado
-                                                const nomeAtual = elementoH1.textContent.trim();
-                                                if (nomeAtual === name) {
-                                                    log(`[Info] Elemento h1 encontrado já contém o nome "${name}". Nenhuma alteração necessária.`);
-                                                } else {
-                                                    log(`[Info] Elemento h1 encontrado contém: "${nomeAtual}". Alterando para "${name}".`);
-                                                    elementoH1.textContent = name;
-                                                    log(`[Modificação] Elemento h1 alterado com sucesso.`);
-
-                                                    // Verifica e altera a classe
-                                                    if (elementoH1.classList.contains('fonteGrande')) {
-                                                        elementoH1.classList.remove('fonteGrande');
-                                                        elementoH1.classList.add('fonteMedia');
-                                                        log(`[Modificação] Classe do elemento h1 alterada de fonteGrande para fonteMedia.`);
-                                                    }
-                                                }
+                                log(`[Info] Elemento p.fonteMedia.colorBlue encontrado com texto: "${elementoFonteMedia.textContent.trim()}". Alterando para "Central de Diagnósticos".`);
+                                setTimeout(() => {
+                                    const elementoFonteMediaAtualizado = document.querySelector('p.fonteMedia.colorBlue');
+                                    if (elementoFonteMediaAtualizado) {
+                                        const elementosH1 = document.querySelectorAll('h1.fonteMedia.colorDarkBlue, h1.fonteGrande.colorDarkBlue');
+                                        if (elementosH1.length > 0) {
+                                            const elementoH1 = elementosH1[0];
+                                            const nomeAtual = elementoH1.textContent.trim();
+                                            if (nomeAtual === name) {
+                                                log(`[Info] Elemento h1 encontrado já contém o nome "${name}". Nenhuma alteração necessária.`);
                                             } else {
-                                                log(`[Erro] Nenhum elemento h1 encontrado com as classes especificadas.`);
+                                                log(`[Info] Elemento h1 encontrado contém: "${nomeAtual}". Alterando para "${name}".`);
+                                                elementoH1.textContent = name;
+                                                log(`[Modificação] Elemento h1 alterado com sucesso.`);
+                                                if (elementoH1.classList.contains('fonteGrande')) {
+                                                    elementoH1.classList.remove('fonteGrande');
+                                                    elementoH1.classList.add('fonteMedia');
+                                                    log(`[Modificação] Classe do elemento h1 alterada de fonteGrande para fonteMedia.`);
+                                                }
                                             }
-                                            log(`[Modificação] Alterando elemento p.fonteMedia.colorBlue para: Sala de exame 01 - MATRIZ`);
-                                            elementoFonteMediaAtualizado.textContent = "Sala de exame 01 - MATRIZ";
-                                            log(`[Modificação] Elemento p.fonteMedia.colorBlue alterado com sucesso.`);
                                         } else {
-                                            log(`[Erro] Elemento p.fonteMedia.colorBlue não encontrado após atraso.`);
+                                            log(`[Erro] Nenhum elemento h1 encontrado com as classes especificadas.`);
                                         }
-                                    }, 100);
-                                }
+                                        log(`[Modificação] Alterando elemento p.fonteMedia.colorBlue para: Central de Diagnósticos`);
+                                        elementoFonteMediaAtualizado.textContent = "Central de Diagnósticos";
+                                        log(`[Modificação] Elemento p.fonteMedia.colorBlue alterado com sucesso.`);
+                                    } else {
+                                        log(`[Erro] Elemento p.fonteMedia.colorBlue não encontrado após atraso.`);
+                                    }
+                                }, 100);
                             } else {
                                 log(`[Erro] Elemento p.fonteMedia.colorBlue não encontrado.`);
                             }
@@ -165,75 +158,62 @@
                                 log(`[Info] Primeiro parágrafo encontrado: ${primeiroParagrafo ? 'Sim' : 'Não'}`);
                                 log(`[Info] Último parágrafo encontrado: ${ultimoParagrafo ? 'Sim' : 'Não'}`);
 
-                                if (ultimoParagrafo && ultimoParagrafo.textContent.trim() === "Sala de exame 01 - MATRIZ") {
-                                    log(`[Info] Primeiro <td> em #ultimasGeral já contém "Sala de exame 01 - MATRIZ". Nenhuma alteração necessária.`);
+                                if (primeiroParagrafo) {
+                                    log(`[Modificação] Alterando primeiro parágrafo para: ${name}`);
+                                    primeiroParagrafo.textContent = name;
+                                    log(`[Modificação] Primeiro parágrafo alterado com sucesso.`);
                                 } else {
-                                    log(`[Info] Primeiro <td> em #ultimasGeral contém: "${ultimoParagrafo ? ultimoParagrafo.textContent.trim() : 'Conteúdo não encontrado'}". Alterando para "Sala de exame 01 - MATRIZ".`);
-
-                                    if (primeiroParagrafo) {
-                                        log(`[Modificação] Alterando primeiro parágrafo para: ${name}`);
-                                        primeiroParagrafo.textContent = name;
-                                        log(`[Modificação] Primeiro parágrafo alterado com sucesso.`);
-                                    } else {
-                                        log(`[Erro] Primeiro parágrafo não encontrado no primeiro <td> em #ultimasGeral.`);
-                                    }
-
-                                    if (ultimoParagrafo) {
-                                        log(`[Modificação] Alterando último parágrafo para: Sala de exame 01 - MATRIZ`);
-                                        ultimoParagrafo.textContent = "Sala de exame 01 - MATRIZ";
-                                        log(`[Modificação] Último parágrafo alterado com sucesso.`);
-                                    } else {
-                                        log(`[Erro] Último parágrafo não encontrado no primeiro <td> em #ultimasGeral.`);
-                                    }
+                                    log(`[Erro] Primeiro parágrafo não encontrado no primeiro <td> em #ultimasGeral.`);
                                 }
-                                window.speechSynthesis.speak(new SpeechSynthesisUtterance(`dr.  está chamando paciente ${name} para atendimento na sala de exame 01 - matriz`));
+
+                                if (ultimoParagrafo) {
+                                    log(`[Modificação] Alterando último parágrafo para: Central de Diagnósticos`);
+                                    ultimoParagrafo.textContent = "Central de Diagnósticos";
+                                    log(`[Modificação] Último parágrafo alterado com sucesso.`);
+                                } else {
+                                    log(`[Erro] Último parágrafo não encontrado no primeiro <td> em #ultimasGeral.`);
+                                }
+                                window.speechSynthesis.speak(new SpeechSynthesisUtterance(`dr.  está chamando paciente ${name} para atendimento na Central de Diagnósticos`));
                             } else {
                                 log(`[Erro] Primeiro <td> não encontrado em #ultimasGeral.`);
-                                window.speechSynthesis.speak(new SpeechSynthesisUtterance(`dr.  está chamando paciente ${name} para atendimento na sala de exame 01 - matriz`));
+                                window.speechSynthesis.speak(new SpeechSynthesisUtterance(`dr.  está chamando paciente ${name} para atendimento na Central de Diagnósticos`));
                             }
                             break;
                         }
                         case '/testetriagem': {
-                            atualizarListaPacientes(name, "Sala de exames 01");
+                            atualizarListaPacientes(name, "Sala de Triagem");
                             const elementoFonteMedia = document.querySelector('p.fonteMedia.colorBlue');
                             if (elementoFonteMedia) {
-                                if (elementoFonteMedia.textContent.trim() === "Sala de exame 01 - MATRIZ") {
-                                    log(`[Info] Elemento p.fonteMedia.colorBlue já contém "Sala de exame 01 - MATRIZ". Nenhuma alteração necessária.`);
-                                } else {
-                                    log(`[Info] Elemento p.fonteMedia.colorBlue contém: "${elementoFonteMedia.textContent.trim()}". Alterando para "Sala de exame 01 - MATRIZ".`);
-                                    // Adiciona um atraso de 100ms antes de tentar alterar o elemento
-                                    setTimeout(() => {
-                                        const elementoFonteMediaAtualizado = document.querySelector('p.fonteMedia.colorBlue');
-                                        if (elementoFonteMediaAtualizado) {
-                                            const elementosH1 = document.querySelectorAll('h1.fonteMedia.colorDarkBlue, h1.fonteGrande.colorDarkBlue');
-                                            if (elementosH1.length > 0) {
-                                                const elementoH1 = elementosH1[0]; // Pega o primeiro elemento encontrado
-                                                const nomeAtual = elementoH1.textContent.trim();
-                                                if (nomeAtual === name) {
-                                                    log(`[Info] Elemento h1 encontrado já contém o nome "${name}". Nenhuma alteração necessária.`);
-                                                } else {
-                                                    log(`[Info] Elemento h1 encontrado contém: "${nomeAtual}". Alterando para "${name}".`);
-                                                    elementoH1.textContent = name;
-                                                    log(`[Modificação] Elemento h1 alterado com sucesso.`);
-
-                                                    // Verifica e altera a classe
-                                                    if (elementoH1.classList.contains('fonteGrande')) {
-                                                        elementoH1.classList.remove('fonteGrande');
-                                                        elementoH1.classList.add('fonteMedia');
-                                                        log(`[Modificação] Classe do elemento h1 alterada de fonteGrande para fonteMedia.`);
-                                                    }
-                                                }
+                                log(`[Info] Elemento p.fonteMedia.colorBlue encontrado com texto: "${elementoFonteMedia.textContent.trim()}". Alterando para "Sala de Triagem".`);
+                                setTimeout(() => {
+                                    const elementoFonteMediaAtualizado = document.querySelector('p.fonteMedia.colorBlue');
+                                    if (elementoFonteMediaAtualizado) {
+                                        const elementosH1 = document.querySelectorAll('h1.fonteMedia.colorDarkBlue, h1.fonteGrande.colorDarkBlue');
+                                        if (elementosH1.length > 0) {
+                                            const elementoH1 = elementosH1[0];
+                                            const nomeAtual = elementoH1.textContent.trim();
+                                            if (nomeAtual === name) {
+                                                log(`[Info] Elemento h1 encontrado já contém o nome "${name}". Nenhuma alteração necessária.`);
                                             } else {
-                                                log(`[Erro] Nenhum elemento h1 encontrado com as classes especificadas.`);
+                                                log(`[Info] Elemento h1 encontrado contém: "${nomeAtual}". Alterando para "${name}".`);
+                                                elementoH1.textContent = name;
+                                                log(`[Modificação] Elemento h1 alterado com sucesso.`);
+                                                if (elementoH1.classList.contains('fonteGrande')) {
+                                                    elementoH1.classList.remove('fonteGrande');
+                                                    elementoH1.classList.add('fonteMedia');
+                                                    log(`[Modificação] Classe do elemento h1 alterada de fonteGrande para fonteMedia.`);
+                                                }
                                             }
-                                            log(`[Modificação] Alterando elemento p.fonteMedia.colorBlue para: Sala de exame 01 - MATRIZ`);
-                                            elementoFonteMediaAtualizado.textContent = "Sala de exame 01 - MATRIZ";
-                                            log(`[Modificação] Elemento p.fonteMedia.colorBlue alterado com sucesso.`);
                                         } else {
-                                            log(`[Erro] Elemento p.fonteMedia.colorBlue não encontrado após atraso.`);
+                                            log(`[Erro] Nenhum elemento h1 encontrado com as classes especificadas.`);
                                         }
-                                    }, 100);
-                                }
+                                        log(`[Modificação] Alterando elemento p.fonteMedia.colorBlue para: Sala de Triagem`);
+                                        elementoFonteMediaAtualizado.textContent = "Sala de Triagem";
+                                        log(`[Modificação] Elemento p.fonteMedia.colorBlue alterado com sucesso.`);
+                                    } else {
+                                        log(`[Erro] Elemento p.fonteMedia.colorBlue não encontrado após atraso.`);
+                                    }
+                                }, 100);
                             } else {
                                 log(`[Erro] Elemento p.fonteMedia.colorBlue não encontrado.`);
                             }
@@ -247,39 +227,33 @@
                                 log(`[Info] Primeiro parágrafo encontrado: ${primeiroParagrafo ? 'Sim' : 'Não'}`);
                                 log(`[Info] Último parágrafo encontrado: ${ultimoParagrafo ? 'Sim' : 'Não'}`);
 
-                                if (ultimoParagrafo && ultimoParagrafo.textContent.trim() === "Sala de exame 01 - MATRIZ") {
-                                    log(`[Info] Primeiro <td> em #ultimasGeral já contém "Sala de exame 01 - MATRIZ". Nenhuma alteração necessária.`);
+                                if (primeiroParagrafo) {
+                                    log(`[Modificação] Alterando primeiro parágrafo para: ${name}`);
+                                    primeiroParagrafo.textContent = name;
+                                    log(`[Modificação] Primeiro parágrafo alterado com sucesso.`);
                                 } else {
-                                    log(`[Info] Primeiro <td> em #ultimasGeral contém: "${ultimoParagrafo ? ultimoParagrafo.textContent.trim() : 'Conteúdo não encontrado'}". Alterando para "Sala de exame 01 - MATRIZ".`);
-
-                                    if (primeiroParagrafo) {
-                                        log(`[Modificação] Alterando primeiro parágrafo para: ${name}`);
-                                        primeiroParagrafo.textContent = name;
-                                        log(`[Modificação] Primeiro parágrafo alterado com sucesso.`);
-                                    } else {
-                                        log(`[Erro] Primeiro parágrafo não encontrado no primeiro <td> em #ultimasGeral.`);
-                                    }
-
-                                    if (ultimoParagrafo) {
-                                        log(`[Modificação] Alterando último parágrafo para: Sala de exame 01 - MATRIZ`);
-                                        ultimoParagrafo.textContent = "Sala de exame 01 - MATRIZ";
-                                        log(`[Modificação] Último parágrafo alterado com sucesso.`);
-                                    } else {
-                                        log(`[Erro] Último parágrafo não encontrado no primeiro <td> em #ultimasGeral.`);
-                                    }
+                                    log(`[Erro] Primeiro parágrafo não encontrado no primeiro <td> em #ultimasGeral.`);
                                 }
-                                window.speechSynthesis.speak(new SpeechSynthesisUtterance(`está chamando paciente ${name} para atendimento na sala de exame 01 - matriz`));
+
+                                if (ultimoParagrafo) {
+                                    log(`[Modificação] Alterando último parágrafo para: Sala de Triagem`);
+                                    ultimoParagrafo.textContent = "Sala de Triagem";
+                                    log(`[Modificação] Último parágrafo alterado com sucesso.`);
+                                } else {
+                                    log(`[Erro] Último parágrafo não encontrado no primeiro <td> em #ultimasGeral.`);
+                                }
+                                window.speechSynthesis.speak(new SpeechSynthesisUtterance(`está chamando paciente ${name} para atendimento na Sala de Triagem`));
                             } else {
                                 log(`[Erro] Primeiro <td> não encontrado em #ultimasGeral.`);
-                                window.speechSynthesis.speak(new SpeechSynthesisUtterance(`está chamando paciente ${name} para atendimento na sala de exame 01 - matriz`));
+                                window.speechSynthesis.speak(new SpeechSynthesisUtterance(`está chamando paciente ${name} para atendimento na Sala de Triagem`));
                             }
                             break;
-                        } // Fecha o bloco {}
+                        }
                         default:
                             log('Comando inválido.', true);
                     }
-                    log(`Lista de pacientes: ${JSON.stringify(ultimosPacientes)}`); // Exibe a lista
-                    input.value = ''; // Limpa a caixa de texto
+                    log(`Lista de pacientes: ${JSON.stringify(ultimosPacientes)}`);
+                    input.value = '';
                 };
 
                 button.addEventListener('click', executeCommand);
@@ -287,7 +261,7 @@
                 input.addEventListener('keydown', (event) => {
                     if (event.key === 'Enter') {
                         executeCommand();
-                        input.value = ''; // Limpa a caixa de texto
+                        input.value = '';
                     }
                 });
 
@@ -304,7 +278,7 @@
                 setInterval(() => {
                     input.placeholder = commands[commandIndex];
                     commandIndex = (commandIndex + 1) % commands.length;
-                }, 2000)
+                }, 2000);
             }
         }
     };
@@ -316,10 +290,10 @@
     function atualizarListaPacientes(nomePaciente, setor) {
         log(`[Atualização] Adicionando/atualizando paciente: ${nomePaciente} -> ${setor}`);
         if (nomePaciente) {
-            const nomePacienteTrimmed = nomePaciente.trim().toUpperCase(); // Remove espaços e converte para maiúsculas
+            const nomePacienteTrimmed = nomePaciente.trim().toUpperCase();
             ultimosPacientes = ultimosPacientes.filter(p => {
                 if (p.nome) {
-                    const pNomeTrimmed = p.nome.trim().toUpperCase(); // Remove espaços e converte para maiúsculas
+                    const pNomeTrimmed = p.nome.trim().toUpperCase();
                     log(`[Info] p.nome (dentro do array 'ultimosPacientes') encontrado: ${p.nome}. Comparando com a variável 'nomePaciente' (vindo da utterance via função atualizarListaPacientes): ${nomePaciente}.`);
                     return pNomeTrimmed !== nomePacienteTrimmed;
                 } else {
@@ -330,7 +304,6 @@
             ultimosPacientes.unshift({ nome: nomePacienteTrimmed, setor });
             if (ultimosPacientes.length > 5) ultimosPacientes.pop();
             log(`[Atualização] Lista de últimos pacientes atualizada: ${JSON.stringify(ultimosPacientes)}`);
-            log(`[Atualização] Lista de últimos pacientes após atualização: ${JSON.stringify(ultimosPacientes)}`);
         } else {
             log(`[Erro] nomePaciente (vinda da função atualizarListaPacientes) é undefined. Atualização da lista de pacientes ignorada.`);
         }
@@ -343,37 +316,51 @@
 
             const elementoFonteMedia = document.querySelector('p.fonteMedia.colorBlue');
             if (elementoFonteMedia && elementoFonteMedia.textContent.includes("Sala de exame 01 - MATRIZ")) {
-                elementoFonteMedia.textContent = setor === "Sala de Exames 01" ? "Sala de Exames 01" : "Sala de Triagem";
-                log(`[Modificação] Texto na tela alterado para '${setor === "Sala de Exames 01" ? "Sala de Exames 01" : "Sala de Triagem"}' (fonteMedia colorBlue).`);
+                const novoSetor = setor === "Central de Diagnósticos" ? "Central de Diagnósticos" : setor === "Sala de Triagem" ? "Sala de Triagem" : "Sala de Exames 01";
+                log(`[Info] Elemento p.fonteMedia.colorBlue encontrado com texto: "${elementoFonteMedia.textContent.trim()}". Alterando para "${novoSetor}".`);
+                elementoFonteMedia.textContent = novoSetor;
+                log(`[Modificação] Texto na tela alterado para '${novoSetor}' (fonteMedia colorBlue).`);
+            } else {
+                log(`[Erro] Elemento p.fonteMedia.colorBlue não encontrado ou não contém "Sala de exame 01 - MATRIZ". Texto atual: "${elementoFonteMedia ? elementoFonteMedia.textContent.trim() : 'N/A'}".`);
             }
+        } else {
+            log(`[Erro] Lista de últimos pacientes vazia, não é possível alterar texto na tela.`);
         }
     }
 
     function modificarUltimasGeral() {
         log("[Observer] Verificando e alterando nomes em #ultimasGeral.");
         if (!ultimosPacientes || ultimosPacientes.length === 0) {
-            log("[Observer] Lista de pacientes vazia."); // Mensagem para lista vazia
-        } else {
-            log(`[Observer] Lista de últimos pacientes: ${JSON.stringify(ultimosPacientes)}`); // Log da lista de pacientes
+            log("[Observer] Lista de pacientes vazia.");
+            return;
         }
 
+        log(`[Observer] Lista de últimos pacientes: ${JSON.stringify(ultimosPacientes)}`);
+
         const tds = document.querySelectorAll('#ultimasGeral td');
-        tds.forEach(td => {
+        if (tds.length === 0) {
+            log(`[Erro] Nenhum elemento <td> encontrado em #ultimasGeral.`);
+            return;
+        }
+
+        tds.forEach((td, index) => {
             const nomeElement = td.querySelector('p:first-of-type');
             const setorElement = td.querySelector('p:last-of-type');
 
             if (nomeElement && setorElement && setorElement.textContent.includes("Sala de exame 01 - MATRIZ")) {
                 const nomePaciente = nomeElement.textContent.trim();
-                log(`[Observer] Nome encontrado: ${nomePaciente}`);
-                log(`[Observer] Setor encontrado: ${setorElement.textContent}`);
+                log(`[Observer] TD ${index + 1}: Nome encontrado: ${nomePaciente}, Setor encontrado: ${setorElement.textContent.trim()}`);
 
                 ultimosPacientes.forEach(paciente => {
-                    log(`[Observer] Comparando com paciente: ${paciente.nome}`);
-                    if (paciente.nome === nomePaciente) {
-                        setorElement.textContent = paciente.setor;
-                        log(`[Observer] Atualizando: ${nomePaciente} -> ${paciente.setor}`);
+                    if (paciente.nome === nomePaciente.toUpperCase()) {
+                        const novoSetor = paciente.setor === "Central de Diagnósticos" ? "Central de Diagnósticos" : paciente.setor === "Sala de Triagem" ? "Sala de Triagem" : "Sala de Exames 01";
+                        log(`[Observer] Correspondência encontrada para paciente: ${paciente.nome}, setor: ${paciente.setor}`);
+                        setorElement.textContent = novoSetor;
+                        log(`[Observer] Atualizando TD ${index + 1}: ${nomePaciente} -> ${novoSetor}`);
                     }
                 });
+            } else {
+                log(`[Erro] TD ${index + 1}: Nome ou setor não encontrado ou não contém "Sala de exame 01 - MATRIZ" (nomeElement: ${nomeElement ? 'Sim' : 'Não'}, setorElement: ${setorElement ? 'Sim' : 'Não'}, texto: ${setorElement ? setorElement.textContent.trim() : 'N/A'}).`);
             }
         });
     }
@@ -386,7 +373,7 @@
         }
 
         const observer = new MutationObserver(mutations => {
-            log("[Observer] Mudança detectada em #ultimasGeral."); // Log de detecção do observador
+            log("[Observer] Mudança detectada em #ultimasGeral.");
             observer.disconnect();
             mutations.forEach(mutation => {
                 if (mutation.type === 'childList') {
@@ -433,7 +420,7 @@
 
         if (match) {
             const nomePaciente = match[1].trim();
-            const setor = comecaComDr ? "Sala de Exames 01" : "Sala de Triagem";
+            const setor = comecaComDr ? "Central de Diagnósticos" : "Sala de Triagem";
 
             log(`[Interceptação] Nome extraído: ${nomePaciente}`);
             log(`[Interceptação] Setor determinado: ${setor}`);
@@ -444,27 +431,24 @@
             log(`[Modificação] Texto final para fala: ${utterance.text}`);
 
             alterarTextoNaTela();
+            modificarUltimasGeral();
         }
 
-        // Substituição de "atendimento na consultório" por "atendimento no consultório"
         if (utterance.text.includes("atendimento na consultório")) {
             utterance.text = utterance.text.replace("atendimento na consultório", "atendimento no consultório");
             log(`[Modificação] Texto após substituição de 'na consultório' por 'no consultório': ${utterance.text}`);
         }
 
-        // Substituição de "dr.  " por "dr. "
         if (utterance.text.includes("dr.  ")) {
             utterance.text = utterance.text.replace("dr.  ", "dr. ");
             log(`[Modificação] Texto após substituição de 'dr.  ': ${utterance.text}`);
         }
 
-        // Substituição de " - matriz" por ""
         if (utterance.text.includes(" - matriz")) {
             utterance.text = utterance.text.replace(" - matriz", ".");
             log(`[Modificação] Texto após substituição de ' - matriz': ${utterance.text}`);
         }
 
-        // Substituição de "está chamando paciente" por "está chamando"
         if (utterance.text.includes("está chamando paciente")) {
             utterance.text = utterance.text.replace("está chamando paciente", "está chamando");
             log(`[Modificação] Texto após substituição de 'está chamando paciente' por 'está chamando': ${utterance.text}`);
