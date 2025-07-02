@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Interceptar e Modificar Fala e Texto na Tela (Atualizado com Nomes e Diferenciação de Setores) - Otimizado
 // @namespace    http://tampermonkey.net/
-// @version      2.2.5
-// @description  Modifica a fala e o texto na tela, diferenciando chamadas de pré-consulta (Sala de Pré-Consulta) e exames (Central de Diagnósticos), com botão de tela cheia no canto superior esquerdo.
+// @version      2.2.6
+// @description  Modifica a fala e o texto na tela, diferenciando chamadas de triagem (Sala de Triagem) e exames (Central de Diagnósticos), com botão de tela cheia no canto superior esquerdo.
 // @match        https://core.feegow.com/tvcall/panelV3/vvAM/*
 // @match        https://core.feegow.com/tvcall/panelV3/pzMY/7
 // @grant        none
@@ -181,10 +181,10 @@
                             break;
                         }
                         case '/testetriagem': {
-                            atualizarListaPacientes(name, "Sala de Pré-Consulta");
+                            atualizarListaPacientes(name, "Sala de Triagem");
                             const elementoFonteMedia = document.querySelector('p.fonteMedia.colorBlue');
                             if (elementoFonteMedia) {
-                                log(`[Info] Elemento p.fonteMedia.colorBlue encontrado com texto: "${elementoFonteMedia.textContent.trim()}". Alterando para "Sala de Pré-Consulta".`);
+                                log(`[Info] Elemento p.fonteMedia.colorBlue encontrado com texto: "${elementoFonteMedia.textContent.trim()}". Alterando para "Sala de Triagem".`);
                                 setTimeout(() => {
                                     const elementoFonteMediaAtualizado = document.querySelector('p.fonteMedia.colorBlue');
                                     if (elementoFonteMediaAtualizado) {
@@ -207,8 +207,8 @@
                                         } else {
                                             log(`[Erro] Nenhum elemento h1 encontrado com as classes especificadas.`);
                                         }
-                                        log(`[Modificação] Alterando elemento p.fonteMedia.colorBlue para: Sala de Pré-Consulta`);
-                                        elementoFonteMediaAtualizado.textContent = "Sala de Pré-Consulta";
+                                        log(`[Modificação] Alterando elemento p.fonteMedia.colorBlue para: Sala de Triagem`);
+                                        elementoFonteMediaAtualizado.textContent = "Sala de Triagem";
                                         log(`[Modificação] Elemento p.fonteMedia.colorBlue alterado com sucesso.`);
                                     } else {
                                         log(`[Erro] Elemento p.fonteMedia.colorBlue não encontrado após atraso.`);
@@ -236,16 +236,16 @@
                                 }
 
                                 if (ultimoParagrafo) {
-                                    log(`[Modificação] Alterando último parágrafo para: Sala de Pré-Consulta`);
-                                    ultimoParagrafo.textContent = "Sala de Pré-Consulta";
+                                    log(`[Modificação] Alterando último parágrafo para: Sala de Triagem`);
+                                    ultimoParagrafo.textContent = "Sala de Triagem";
                                     log(`[Modificação] Último parágrafo alterado com sucesso.`);
                                 } else {
                                     log(`[Erro] Último parágrafo não encontrado no primeiro <td> em #ultimasGeral.`);
                                 }
-                                window.speechSynthesis.speak(new SpeechSynthesisUtterance(`está chamando paciente ${name} para atendimento na Sala de Pré-Consulta`));
+                                window.speechSynthesis.speak(new SpeechSynthesisUtterance(`está chamando paciente ${name} para atendimento na Sala de Triagem`));
                             } else {
                                 log(`[Erro] Primeiro <td> não encontrado em #ultimasGeral.`);
-                                window.speechSynthesis.speak(new SpeechSynthesisUtterance(`está chamando paciente ${name} para atendimento na Sala de Pré-Consulta`));
+                                window.speechSynthesis.speak(new SpeechSynthesisUtterance(`está chamando paciente ${name} para atendimento na Sala de Triagem`));
                             }
                             break;
                         }
@@ -373,7 +373,7 @@
 
             const elementoFonteMedia = document.querySelector('p.fonteMedia.colorBlue');
             if (elementoFonteMedia && elementoFonteMedia.textContent.includes("Sala de exame 01 - MATRIZ")) {
-                const novoSetor = setor === "Central de Diagnósticos" ? "Central de Diagnósticos" : setor === "Sala de Pré-Consulta" ? "Sala de Pré-Consulta" : "Sala de Exames 01";
+                const novoSetor = setor === "Central de Diagnósticos" ? "Central de Diagnósticos" : setor === "Sala de Triagem" ? "Sala de Triagem" : "Sala de Exames 01";
                 log(`[Info] Elemento p.fonteMedia.colorBlue encontrado com texto: "${elementoFonteMedia.textContent.trim()}". Alterando para "${novoSetor}".`);
                 elementoFonteMedia.textContent = novoSetor;
                 log(`[Modificação] Texto na tela alterado para '${novoSetor}' (fonteMedia colorBlue).`);
@@ -410,7 +410,7 @@
 
                 ultimosPacientes.forEach(paciente => {
                     if (paciente.nome === nomePaciente.toUpperCase()) {
-                        const novoSetor = paciente.setor === "Central de Diagnósticos" ? "Central de Diagnósticos" : paciente.setor === "Sala de Pré-Consulta" ? "Sala de Pré-Consulta" : "Sala de Exames 01";
+                        const novoSetor = paciente.setor === "Central de Diagnósticos" ? "Central de Diagnósticos" : paciente.setor === "Sala de Triagem" ? "Sala de Triagem" : "Sala de Exames 01";
                         log(`[Observer] Correspondência encontrada para paciente: ${paciente.nome}, setor: ${paciente.setor}`);
                         setorElement.textContent = novoSetor;
                         log(`[Observer] Atualizando TD ${index + 1}: ${nomePaciente} -> ${novoSetor}`);
@@ -477,7 +477,7 @@
 
         if (match) {
             const nomePaciente = match[1].trim();
-            const setor = comecaComDr ? "Central de Diagnósticos" : "Sala de Pré-Consulta";
+            const setor = comecaComDr ? "Central de Diagnósticos" : "Sala de Triagem";
 
             log(`[Interceptação] Nome extraído: ${nomePaciente}`);
             log(`[Interceptação] Setor determinado: ${setor}`);
