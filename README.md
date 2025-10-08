@@ -1,4 +1,5 @@
 🏥 Feegow - Interceptar e Modificar Fala e Texto na Tela 🎤🖥️
+
 📝 Descrição
 Este é um script Tampermonkey que intercepta e modifica a fala e o texto exibido na tela do sistema Feegow, diferenciando chamadas de triagem (Sala de Pré-Consulta) e exames (Central de Diagnósticos). Desenvolvido para o HOC Hospital de Olhos de Caraguatatuba 👁️, o script foi otimizado com logs detalhados condicionais, uma interface de logs interativa e um botão de tela cheia para melhorar a experiência do usuário. 🛠️🔍
 
