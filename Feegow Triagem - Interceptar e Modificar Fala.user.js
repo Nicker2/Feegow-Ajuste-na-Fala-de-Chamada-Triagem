@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Interceptar e Modificar Fala e Texto na Tela (Atualizado com Nomes e Diferenciação de Setores) - Otimizado
-// @namespace    http://tampermonkey.net/
+// @namespace    https://github.com/Nicker2/Feegow-Ajuste-na-Fala-de-Chamada-Triagem/
 // @version      2.2.5
 // @description  Modifica a fala e o texto na tela, diferenciando chamadas de pré-consulta (Sala de Pré-Consulta) e exames (Central de Diagnósticos), com botão de tela cheia no canto superior esquerdo.
 // @match        https://core.feegow.com/tvcall/panelV3/vvAM/*
