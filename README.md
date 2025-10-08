@@ -1,93 +1,95 @@
-# 🏥 Feegow - Interceptar e Modificar Fala e Texto na Tela 🎤🖥️
+🏥 Feegow - Interceptar e Modificar Fala e Texto na Tela 🎤🖥️
+📝 Descrição
+Este é um script Tampermonkey que intercepta e modifica a fala e o texto exibido na tela do sistema Feegow, diferenciando chamadas de triagem (Sala de Pré-Consulta) e exames (Central de Diagnósticos). Desenvolvido para o HOC Hospital de Olhos de Caraguatatuba 👁️, o script foi otimizado com logs detalhados condicionais, uma interface de logs interativa e um botão de tela cheia para melhorar a experiência do usuário. 🛠️🔍
 
-## 📝 Descrição
+🛠️ Funcionalidades
 
-Este é um script **Tampermonkey** que intercepta e modifica a fala e o texto exibido na tela do sistema **Feegow**, diferenciando chamadas de **triagem** e **exames**. Ele foi desenvolvido para o **HOC Hospital de Olhos de Caraguatatuba** 👁️ e otimizado com **logs detalhados condicionais** para facilitar a depuração e o monitoramento. 🛠️🔍
+Interceptação da fala: Modifica o texto de chamadas de pacientes, substituindo referências à sala de exame 01 - matriz por "Sala de Pré-Consulta" ou "Central de Diagnósticos", conforme o contexto. 🎤🔄
+Atualização dinâmica da tela: Altera o texto exibido na interface do Feegow para refletir as modificações feitas na fala. 🖥️✨
+Logs detalhados condicionais: Exibe logs no console e em uma interface visual quando o modo de depuração está ativo, facilitando o monitoramento. 📜🖥️
+Comandos personalizados: Permite testar chamadas de pacientes com comandos como /testedr, /testexames e /testetriagem. 🎮🔧
+Interface de logs interativa: Cria uma janela fixa de logs com mensagens em tempo real e transições suaves. 🪟📝
+Botão de tela cheia: Adiciona um botão no canto superior esquerdo para ativar o modo de tela cheia. 📺🔲
 
----
 
-## 🛠️ Funcionalidades
+⚙️ Como Funciona
 
-- **Interceptação da fala**: Modifica o texto de chamadas de pacientes, substituindo referências à **sala de exame 01** por **"sala de triagem"** ou **"sala de exames 01"**, dependendo do contexto. 🎤🔄
-- **Atualização dinâmica da tela**: Altera o texto exibido na interface do Feegow para refletir as modificações feitas na fala. 🖥️✨
-- **Logs detalhados**: Exibe logs no console e em uma interface visual para facilitar o acompanhamento das alterações. 📜🖥️
-- **Comandos personalizados**: Permite testar chamadas de pacientes via comandos como `/testedr`, `/testexames` e `/testetriagem`. 🎮🔧
-- **Interface de logs interativa**: Cria uma janela de logs fixa na tela, com mensagens em tempo real e efeitos de transição. 🪟📝
+Interceptação da função de fala: Substitui a função speechSynthesis.speak do navegador para modificar o texto antes de ser pronunciado. 🎤🔧
+Verificação de condições: Analisa o texto da fala para identificar se a chamada é para triagem (sem "dr.") ou exames (com "dr."). 🔍✅
+Modificação do texto:
+Substitui "sala de exame 01 - matriz" por "Sala de Pré-Consulta" ou "Central de Diagnósticos", conforme o contexto. 🏥🔄
+Extrai o nome do paciente e atualiza a lista de últimos pacientes chamados. 📋👤
 
----
 
-## ⚙️ Como Funciona
+Atualização da interface: Modifica elementos da tela (como p.fonteMedia.colorBlue e #ultimasGeral) para refletir as alterações na fala. 🖥️✨
+Logs detalhados: Registra todas as ações no console e na interface visual (quando debugMode = 1). 📜🖥️
+Modo de tela cheia: Adiciona um botão para ativar/desativar o modo de tela cheia, com monitoramento automático do estado. 📺🔲
 
-1. **Interceptação da função de fala**: O script substitui a função `speechSynthesis.speak` do navegador para modificar o texto antes de ser pronunciado. 🎤🔧
-2. **Verificação de condições**: O texto da fala é analisado para identificar se a chamada é para **triagem** ou **exames**. 🔍✅
-3. **Modificação do texto**:
-   - Se a fala mencionar **"sala de exame 01 - matriz"**, o texto é alterado para **"sala de triagem"** ou **"sala de exames 01"**, dependendo do contexto. 🏥🔄
-   - O nome do paciente é extraído e utilizado para atualizar a lista de últimos pacientes chamados. 📋👤
-4. **Atualização da interface**: O texto exibido na tela é alterado para refletir as modificações feitas na fala. 🖥️✨
-5. **Logs detalhados**: Todas as ações são registradas no console e em uma interface visual para facilitar o monitoramento. 📜🖥️
 
----
+🚀 Como Usar
 
-## 🚀 Como Usar
+Instale o Tampermonkey como extensão no seu navegador (Chrome, Firefox, etc.). 🐒
+Crie um novo script no Tampermonkey e cole o código fornecido. 📜
+Acesse a URL do Feegow: O script é executado automaticamente nas URLs configuradas (https://core.feegow.com/tvcall/panelV3/*). 🌐
+Ative o modo de depuração (opcional): Defina debugMode = 1 no script para habilitar logs no console e na interface visual. 🔍
+Teste os comandos (com debugMode = 1):
+/testedr NOME: Simula uma chamada de consultório. 🩺
+/testexames NOME: Simula uma chamada de exames. 🧪
+/testetriagem NOME: Simula uma chamada de triagem. 🚨
 
-1. **Instale o Tampermonkey** como extensão no seu navegador. 🐒
-2. **Crie um novo script** no Tampermonkey e cole o código fornecido. 📜
-3. **Acesse a URL do Feegow**: O script será executado automaticamente nas URLs correspondentes. 🌐
-4. **Teste os comandos**:
-   - Use `/testedr NOME` para simular uma chamada de consultório. 🩺
-   - Use `/testexames NOME` para simular uma chamada de exames. 🧪
-   - Use `/testetriagem NOME` para simular uma chamada de triagem. 🚨
-5. **Monitore os logs**: Acompanhe as alterações em tempo real na interface de logs. 🖥️📝
 
----
+Monitore os logs: Acompanhe as alterações em tempo real na interface de logs (visível com debugMode = 1). 🖥️📝
+Use o botão de tela cheia: Clique no botão no canto superior esquerdo para ativar o modo de tela cheia. 📺🔲
 
-## 📢 Exemplo de Modificação de Fala
 
-#### Texto original:
-> "dr.  está chamando paciente Rafaela para atendimento na sala de exame 01 - matriz" 🗣️
+📢 Exemplo de Modificação de Fala
+Texto original:
 
----
+"dr.  está chamando paciente Rafaela para atendimento na sala de exame 01 - matriz" 🗣️
 
-#### Texto modificado:
-> "Enfermagem está chamando Rafaela para sala de triagem." 🚨👩‍⚕️
+Texto modificado:
 
----
+"Enfermagem está chamando Rafaela para Central de Diagnósticos." 🧪👩‍⚕️
 
-## 📜 Logs de Depuração
+Texto original:
 
-O script inclui **logs detalhados** no console e em uma interface visual para auxiliar no monitoramento de sua execução. Isso permite verificar se as condições estão sendo atendidas corretamente e se o texto está sendo modificado conforme esperado. 🖥️🔍
+"está chamando paciente João para atendimento na sala de exame 01 - matriz" 🗣️
 
----
+Texto modificado:
 
-## 📦 Dependências
+"Enfermagem está chamando João para Sala de Pré-Consulta." 🚨👩‍⚕️
 
-- **Tampermonkey**: Extensão do navegador para rodar scripts de usuários (userscripts). 🐒
-- **Navegador compatível**: O script foi testado em navegadores como Google Chrome e Firefox, que suportam a API `speechSynthesis`. 🌐
-- **Modo desenvolvedor ativo**: Para instalar o script diretamente pelo Tampermonkey no Google Chrome, é necessário ativar o **modo desenvolvedor** das extensões. 🧑‍💻
 
----
+📜 Logs de Depuração
+Quando debugMode = 1, o script exibe logs detalhados no console e em uma interface visual, incluindo:
 
-## ⚠️ Atenção
+Texto original e modificado da fala.
+Propriedades da fala (idioma, velocidade, tom, volume).
+Alterações nos elementos da tela.
+Atualizações na lista de últimos pacientes.
+Estado do modo de tela cheia.
 
-- Este script foi desenvolvido especificamente para o sistema Feegow do **HOC Hospital de Olhos de Caraguatatuba**. 👁️🏥
-- Pode ser necessário ajustar a lógica caso haja outras modificações nas mensagens de fala ou no formato dos dados. 🔄
+A interface visual de logs aparece como uma janela fixa no canto direito da tela, com mensagens em tempo real e transições suaves. 🪟📝
 
----
+📦 Dependências
 
-## 📜 **Licença**
+Tampermonkey: Extensão para rodar userscripts. 🐒
+Navegador compatível: Testado em Google Chrome e Firefox, com suporte à API speechSynthesis. 🌐
+Modo desenvolvedor ativo: Necessário para instalar o Tampermonkey no Chrome. 🧑‍💻
 
-Este projeto está licenciado sob a **MIT License**. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes. 📄
 
----
+⚠️ Atenção
 
-## 👤 **Autor**
+Este script foi desenvolvido para o sistema Feegow do HOC Hospital de Olhos de Caraguatatuba. 👁️🏥
+Ajustes podem ser necessários se houver mudanças nas mensagens de fala ou na estrutura do Feegow. 🔄
+O modo de depuração (debugMode = 1) deve ser desativado (debugMode = 0) em produção para evitar sobrecarga de logs. ⚙️
 
-Desenvolvido por **Nicolas Bonza Cavalari Borges**. 🧑‍💻
 
----
+📜 Licença
+Este projeto está licenciado sob a MIT License. Consulte o arquivo LICENSE para mais detalhes. 📄
 
-## 🤝 **Contribuições**
+👤 Autor
+Desenvolvido por Nicolas Bonza Cavalari Borges. 🧑‍💻
 
-Se você encontrar algum problema ou quiser sugerir melhorias, fique à vontade para abrir uma **issue** ou enviar um **pull request**. 🛠️🚀
-
----
+🤝 Contribuições
+Encontrou um problema ou tem sugestões de melhorias? Abra uma issue ou envie um pull request no repositório. 🛠️🚀
