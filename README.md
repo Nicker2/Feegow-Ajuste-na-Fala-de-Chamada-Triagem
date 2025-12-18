@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🏥 Otimizador do Painel de Chamadas de TV Feegow
+# 🏥 Feegow TV Panel Interceptor
 ### Otimização de Chamadas de Pacientes e UX para HOC Caraguatatuba
 
 ![Version](https://img.shields.io/badge/version-2.2.5-blue?style=for-the-badge&logo=none)
