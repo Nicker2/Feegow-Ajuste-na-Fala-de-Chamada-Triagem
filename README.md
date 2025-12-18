@@ -143,7 +143,7 @@ Esta interface usa CSS injetado dinamicamente para não interferir no layout ori
 
 ## 📄 Licença
 
-Este projeto está sob a licença **MIT**. Veja o arquivo [LICENSE](https://www.google.com/search?q=LICENSE) para mais detalhes.
+Este projeto está sob a licença **MIT**. Veja o arquivo [LICENSE] para mais detalhes.
 
 ---
 
@@ -156,7 +156,5 @@ Este projeto está sob a licença **MIT**. Veja o arquivo [LICENSE](https://www.
 
 
 *HOC Hospital de Olhos de Caraguatatuba*
-
-[⬆ Voltar ao topo](https://www.google.com/search?q=%23-feegow-tv-panel-interceptor)
 
 </div>
