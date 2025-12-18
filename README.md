@@ -1,107 +1,162 @@
-# 🏥 Feegow - Interceptar e Modificar Fala e Texto na Tela 🎤🖥️
+<div align="center">
 
-## 📝 Descrição
+# 🏥 Otimizador do Painel de Chamadas de TV Feegow
+### Otimização de Chamadas de Pacientes e UX para HOC Caraguatatuba
 
-Este é um script **Tampermonkey** que intercepta e modifica a fala e o texto exibido na tela do sistema **Feegow**, diferenciando chamadas de **triagem** (Sala de Pré-Consulta) e **exames** (Central de Diagnósticos). Desenvolvido para o **HOC Hospital de Olhos de Caraguatatuba** 👁️, o script foi otimizado com **logs detalhados condicionais**, uma **interface de logs interativa** e um **botão de tela cheia** para melhorar a experiência do usuário. 🛠️🔍
+![Version](https://img.shields.io/badge/version-2.2.5-blue?style=for-the-badge&logo=none)
+![Maintainer](https://img.shields.io/badge/maintainer-Nicolas_Bonza-orange?style=for-the-badge&logo=github)
+![Status](https://img.shields.io/badge/status-active-success?style=for-the-badge)
+![License](https://img.shields.io/badge/license-MIT-lightgrey?style=for-the-badge)
 
----
+<p align="center">
+  <a href="#-sobre">Sobre</a> •
+  <a href="#-funcionalidades">Funcionalidades</a> •
+  <a href="#-tecnologias">Tecnologias</a> •
+  <a href="#-instalação">Instalação</a> •
+  <a href="#-comandos-de-teste">Comandos</a> •
+  <a href="#-debug--logs">Debug</a>
+</p>
 
-## 🛠️ Funcionalidades
-
-- **Interceptação da fala**: Modifica o texto de chamadas de pacientes, substituindo referências à **sala de exame 01 - matriz** por **"Sala de Pré-Consulta"** ou **"Central de Diagnósticos"**, conforme o contexto. 🎤🔄
-- **Atualização dinâmica da tela**: Altera o texto exibido na interface do Feegow para refletir as modificações feitas na fala. 🖥️✨
-- **Logs detalhados condicionais**: Exibe logs no console e em uma interface visual quando o modo de depuração está ativo, facilitando o monitoramento. 📜🖥️
-- **Comandos personalizados**: Permite testar chamadas de pacientes com comandos como `/testedr`, `/testexames` e `/testetriagem`. 🎮🔧
-- **Interface de logs interativa**: Cria uma janela fixa de logs com mensagens em tempo real e transições suaves. 🪟📝
-- **Botão de tela cheia**: Adiciona um botão no canto superior esquerdo para ativar o modo de tela cheia. 📺🔲
-
----
-
-## ⚙️ Como Funciona
-
-1. **Interceptação da função de fala**: Substitui a função `speechSynthesis.speak` do navegador para modificar o texto antes de ser pronunciado. 🎤🔧
-2. **Verificação de condições**: Analisa o texto da fala para identificar se a chamada é para **triagem** (sem "dr.") ou **exames** (com "dr."). 🔍✅
-3. **Modificação do texto**:
-   - Substitui **"sala de exame 01 - matriz"** por **"Sala de Pré-Consulta"** ou **"Central de Diagnósticos"**, conforme o contexto. 🏥🔄
-   - Extrai o nome do paciente e atualiza a lista de últimos pacientes chamados. 📋👤
-4. **Atualização da interface**: Modifica elementos da tela (como `p.fonteMedia.colorBlue` e `#ultimasGeral`) para refletir as alterações na fala. 🖥️✨
-5. **Logs detalhados**: Registra todas as ações no console e na interface visual (quando `debugMode = 1`). 📜🖥️
-6. **Modo de tela cheia**: Adiciona um botão para ativar/desativar o modo de tela cheia, com monitoramento automático do estado. 📺🔲
+</div>
 
 ---
 
-## 🚀 Como Usar
+## 📝 Sobre
 
-1. **Instale o Tampermonkey** como extensão no seu navegador (Chrome, Firefox, etc.). 🐒
-2. **Crie um novo script** no Tampermonkey e cole o código fornecido. 📜
-3. **Acesse a URL do Feegow**: O script é executado automaticamente nas URLs configuradas (`https://core.feegow.com/tvcall/panelV3/*`). 🌐
-4. **Ative o modo de depuração (opcional)**: Defina `debugMode = 1` no script para habilitar logs no console e na interface visual. 🔍
-5. **Teste os comandos** (com `debugMode = 1`):
-   - `/testedr NOME`: Simula uma chamada de consultório. 🩺
-   - `/testexames NOME`: Simula uma chamada de exames. 🧪
-   - `/testetriagem NOME`: Simula uma chamada de triagem. 🚨
-6. **Monitore os logs**: Acompanhe as alterações em tempo real na interface de logs (visível com `debugMode = 1`). 🖥️📝
-7. **Use o botão de tela cheia**: Clique no botão no canto superior esquerdo para ativar o modo de tela cheia. 📺🔲
+O **Feegow TV Panel Interceptor** é um Userscript avançado desenvolvido para otimizar o fluxo de chamadas no painel de TV do sistema **Feegow** no **HOC Hospital de Olhos de Caraguatatuba**.
+
+O sistema original não diferenciava verbalmente ou visualmente com clareza os setores de atendimento. Este script intercepta a API de síntese de voz do navegador (`speechSynthesis`) e manipula o DOM em tempo real para categorizar chamadas automaticamente entre **Sala de Pré-Consulta** (Triagem) e **Central de Diagnósticos** (Exames), melhorando significativamente a experiência do paciente e a organização do fluxo hospitalar.
 
 ---
 
-## 📢 Exemplo de Modificação de Fala
+## 🛠️ Tecnologias
 
-#### Texto original:
-> "dr.  está chamando paciente Rafaela para atendimento na sala de exame 01 - matriz" 🗣️
-
-#### Texto modificado:
-> "Enfermagem está chamando Rafaela para Central de Diagnósticos." 🧪👩‍⚕️
-
-#### Texto original:
-> "está chamando paciente João para atendimento na sala de exame 01 - matriz" 🗣️
-
-#### Texto modificado:
-> "Enfermagem está chamando João para Sala de Pré-Consulta." 🚨👩‍⚕️
-
----
-
-## 📜 Logs de Depuração
-
-Quando `debugMode = 1`, o script exibe **logs detalhados** no console e em uma interface visual, incluindo:
-- Texto original e modificado da fala.
-- Propriedades da fala (idioma, velocidade, tom, volume).
-- Alterações nos elementos da tela.
-- Atualizações na lista de últimos pacientes.
-- Estado do modo de tela cheia.
-
-A interface visual de logs aparece como uma janela fixa no canto direito da tela, com mensagens em tempo real e transições suaves. 🪟📝
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript"/>
+    </td>
+    <td align="center">
+      <img src="https://img.shields.io/badge/Tampermonkey-Userscript-004838?style=for-the-badge&logo=tampermonkey&logoColor=white" alt="Tampermonkey"/>
+    </td>
+    <td align="center">
+      <img src="https://img.shields.io/badge/DOM_Manipulation-MutationObserver-orange?style=for-the-badge&logo=html5&logoColor=white" alt="DOM"/>
+    </td>
+  </tr>
+</table>
 
 ---
 
-## 📦 Dependências
+## ✨ Funcionalidades
 
-- **Tampermonkey**: Extensão para rodar userscripts. 🐒
-- **Navegador compatível**: Testado em Google Chrome e Firefox, com suporte à API `speechSynthesis`. 🌐
-- **Modo desenvolvedor ativo**: Necessário para instalar o Tampermonkey no Chrome. 🧑‍💻
+### 🎤 Interceptação de Áudio Inteligente
+* **Context Aware:** Analisa o padrão da string de chamada. Se detectar o prefixo "Dr.", redireciona para *Central de Diagnósticos*. Caso contrário, direciona para *Sala de Pré-Consulta*.
+* **Refinamento de Fala:** Remove redundâncias como "sala de exame 01 - matriz" e substitui por termos amigáveis ao paciente.
+* **Normalização:** Corrige erros gramaticais do sistema original (ex: "na consultório" para "no consultório").
 
----
+### 🖥️ Manipulação de Interface (UI)
+* **Atualização Dinâmica:** Utiliza `MutationObserver` para alterar o texto visível na tela (`#ultimasGeral` e elementos de destaque) em sincronia com o áudio modificado.
+* **Fullscreen Nativo:** Adiciona um botão de controle de tela cheia persistente e não intrusivo na interface.
+* **Histórico Local:** Mantém um array local dos últimos pacientes chamados para garantir consistência entre o áudio e o texto exibido.
 
-## ⚠️ Atenção
-
-- Este script foi desenvolvido para o sistema Feegow do **HOC Hospital de Olhos de Caraguatatuba**. 👁️🏥
-- Ajustes podem ser necessários se houver mudanças nas mensagens de fala ou na estrutura do Feegow. 🔄
-- O modo de depuração (`debugMode = 1`) deve ser desativado (`debugMode = 0`) em produção para evitar sobrecarga de logs. ⚙️
-
----
-
-## 📜 Licença
-
-Este projeto está licenciado sob a **MIT License**. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes. 📄
+### 🔧 Developer Experience (DX)
+* **Console Visual:** Interface de logs flutuante injetada na página para debugging em produção sem necessidade de abrir o DevTools.
+* **Comandos de Simulação:** Ferramentas para testar fluxos sem depender de chamadas reais do sistema.
 
 ---
 
-## 👤 Autor
+## 🚀 Instalação
 
-Desenvolvido por **Nicolas Bonza Cavalari Borges**. 🧑‍💻
+1.  **Pré-requisito:** Instale a extensão **Tampermonkey** no seu navegador ([Chrome](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) | [Firefox](https://addons.mozilla.org/pt-BR/firefox/addon/tampermonkey/)).
+2.  **Instalação do Script:**
+    * Crie um novo script no painel do Tampermonkey.
+    * Copie o código fonte do arquivo `Feegow Triagem - Interceptar e Modificar Fala.user.js`.
+    * Salve (Ctrl+S).
+3.  **Acesso:** O script será ativado automaticamente nas URLs:
+    * `https://core.feegow.com/tvcall/panelV3/*`
 
 ---
 
-## 🤝 Contribuições
+## 🎮 Comandos de Teste
 
-Encontrou um problema ou tem sugestões de melhorias? Abra uma **issue** ou envie um **pull request** no repositório. 🛠️🚀
+Para validar o funcionamento sem aguardar pacientes reais, ative o modo debug (`debugMode = 1`) e utilize o input flutuante injetado na tela:
+
+| Comando | Descrição | Exemplo |
+| :--- | :--- | :--- |
+| `/testedr` | Simula chamada de **Médico/Consultório**. | `/testedr João Silva` |
+| `/testexames` | Simula chamada para **Central de Diagnósticos**. | `/testexames Maria Souza` |
+| `/testetriagem` | Simula chamada para **Pré-Consulta (Triagem)**. | `/testetriagem Pedro Santos` |
+
+---
+
+## 📢 Comparativo de Modificação
+
+Abaixo, exemplos de como o script transforma a experiência:
+
+### Cenário 1: Triagem
+> **🔴 Original:** "Está chamando paciente Rafaela para atendimento na sala de exame 01 - matriz"
+>
+> **🟢 Modificado:** "Enfermagem está chamando Rafaela para Sala de Pré-Consulta."
+
+### Cenário 2: Exames
+> **🔴 Original:** "Dr. está chamando paciente João para atendimento na sala de exame 01 - matriz"
+>
+> **🟢 Modificado:** "Enfermagem está chamando João para Central de Diagnósticos."
+
+---
+
+## 🐛 Debug & Logs
+
+O script possui um sistema robusto de logs condicionais. Para ativar, altere a variável no início do código:
+
+```javascript
+const debugMode = 1; // 0 = Desativado (Prod), 1 = Ativado (Dev)
+
+```
+
+<details>
+<summary><strong>📂 Clique para ver detalhes da Interface Visual de Logs</strong></summary>
+
+
+
+
+Quando ativo, uma janela preta translúcida aparecerá no canto direito contendo:
+
+* Timestamp preciso de cada ação.
+* Propriedades da voz (Rate, Pitch, Volume).
+* Texto original *vs* Texto modificado.
+* Status dos seletores DOM (se encontrou ou não os elementos HTML).
+* Logs de transição de tela cheia.
+
+Esta interface usa CSS injetado dinamicamente para não interferir no layout original do Feegow.
+
+</details>
+
+---
+
+## ⚠️ Notas Importantes
+
+* **Ambiente:** Desenvolvido especificamente para a estrutura DOM do Feegow v3. Alterações no ID dos elementos pelo fornecedor podem requerer manutenção neste script.
+* **Performance:** O `MutationObserver` está configurado para observar apenas a subárvore relevante (`#ultimasGeral`), minimizando impacto na memória do navegador.
+
+---
+
+## 📄 Licença
+
+Este projeto está sob a licença **MIT**. Veja o arquivo [LICENSE](https://www.google.com/search?q=LICENSE) para mais detalhes.
+
+---
+
+<div align="center">
+
+**Desenvolvido por Nicolas Bonza Cavalari Borges**
+
+
+
+
+
+*HOC Hospital de Olhos de Caraguatatuba*
+
+[⬆ Voltar ao topo](https://www.google.com/search?q=%23-feegow-tv-panel-interceptor)
+
+</div>
